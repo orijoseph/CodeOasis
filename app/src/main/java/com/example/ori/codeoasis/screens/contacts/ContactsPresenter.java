@@ -27,7 +27,9 @@ public class ContactsPresenter extends BasePresenter<IContactsContract.View>
     private ApiContract mApiService;
     private List<Contact> mContacts;
 
-    public ContactsPresenter(IContactsContract.View view, ContactDao contactDao, ApiContract apiService) {
+    public ContactsPresenter(IContactsContract.View view,
+                             ContactDao contactDao,
+                             ApiContract apiService) {
         super(view);
         mView = view;
         mDataBaseManager = new DataBaseManager(contactDao);

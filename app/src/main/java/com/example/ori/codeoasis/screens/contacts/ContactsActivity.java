@@ -1,8 +1,6 @@
 package com.example.ori.codeoasis.screens.contacts;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -14,31 +12,29 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.ori.codeoasis.MyApplication;
 import com.example.ori.codeoasis.R;
 import com.example.ori.codeoasis.adapters.ContactsAdapter;
-import com.example.ori.codeoasis.dataBase.ContactViewModel;
-import com.example.ori.codeoasis.dataBase.ContactsDataBase;
+import com.example.ori.codeoasis.dataBase.ContactDao;
 import com.example.ori.codeoasis.helpers.Utils;
 import com.example.ori.codeoasis.models.Contact;
 import com.example.ori.codeoasis.services.ApiContract;
-import com.example.ori.codeoasis.services.WebService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import timber.log.Timber;
+import javax.inject.Inject;
 
 public class ContactsActivity extends AppCompatActivity implements ContactsAdapter.IRecyclerCallbacks, IContactsContract.View {
 
+    @Inject
+    ApiContract apiCalls;
+
+    @Inject
+    ContactDao dataBase;
+
     private RecyclerView mContactsRV;
     private ContactsAdapter mAdapter;
-    private ContactViewModel mViewModel;
     private ContactsPresenter mPresenter;
     private AVLoadingIndicatorView mProgress;
     private ConstraintLayout mRoot;
@@ -48,11 +44,11 @@ public class ContactsActivity extends AppCompatActivity implements ContactsAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
+        ((MyApplication) getApplication()).getmAppComponent().inject(this);
+
         findViews();
 
-        mPresenter = new ContactsPresenter(this,
-                ContactsDataBase.get(this).getContactDao(),
-                WebService.getClient().create(ApiContract.class));
+        mPresenter = new ContactsPresenter(this, dataBase, apiCalls);
 
         mPresenter.start();
     }
@@ -106,9 +102,7 @@ public class ContactsActivity extends AppCompatActivity implements ContactsAdapt
 
     @Override
     public void startObserving() {
-        mViewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
-
-        mViewModel.mContacts.observe(this, this::setRecycler);
+        dataBase.getContacts().observe(this, this::setRecycler);
     }
 
     ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {

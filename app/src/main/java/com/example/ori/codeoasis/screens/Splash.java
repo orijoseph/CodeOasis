@@ -1,6 +1,5 @@
 package com.example.ori.codeoasis.screens;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,16 +10,9 @@ import android.widget.Toast;
 import com.example.ori.codeoasis.MyApplication;
 import com.example.ori.codeoasis.R;
 import com.example.ori.codeoasis.dataBase.ContactDao;
-import com.example.ori.codeoasis.dataBase.ContactViewModel;
-import com.example.ori.codeoasis.dataBase.ContactsDataBase;
-import com.example.ori.codeoasis.models.Contact;
-import com.example.ori.codeoasis.repo.UserRepo;
 import com.example.ori.codeoasis.screens.contacts.ContactsActivity;
 import com.example.ori.codeoasis.services.ApiContract;
-import com.example.ori.codeoasis.services.WebService;
 import com.wang.avi.AVLoadingIndicatorView;
-
-import java.util.List;
 
 import javax.inject.Inject;
 

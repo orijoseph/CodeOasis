@@ -7,7 +7,6 @@ import com.example.ori.codeoasis.dataBase.ContactDao;
 import com.example.ori.codeoasis.dataBase.DataBaseManager;
 import com.example.ori.codeoasis.models.ResponseServer;
 import com.example.ori.codeoasis.presenters.BasePresenter;
-import com.example.ori.codeoasis.repo.UserRepo;
 import com.example.ori.codeoasis.services.ApiContract;
 
 import retrofit2.Call;
@@ -27,7 +26,8 @@ public class SplashPresenter extends BasePresenter<ISplashContact.View>
     private DataBaseManager mDataBaseManager;
 
     public SplashPresenter(ISplashContact.View view,
-                           ApiContract apiService, ContactDao contactDao) {
+                           ApiContract apiService,
+                           ContactDao contactDao) {
         super(view);
         mView = view;
 
@@ -45,7 +45,7 @@ public class SplashPresenter extends BasePresenter<ISplashContact.View>
         mDataBaseManager.getContacts((Context) mView, contacts -> {
             if (contacts.size() == 0) {
                 getContactsFromServer();
-            }else{
+            } else {
                 mView.goToNextScreen();
             }
         });
