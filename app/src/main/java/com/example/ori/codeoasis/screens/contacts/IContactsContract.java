@@ -14,6 +14,8 @@ public interface IContactsContract {
         void showProgressBar(boolean showProgress);
 
         void showErrorMessage();
+
+        void startObserving();
     }
 
     interface Presenter {

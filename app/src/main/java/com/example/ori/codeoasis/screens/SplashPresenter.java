@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.example.ori.codeoasis.dataBase.ContactDao;
 import com.example.ori.codeoasis.dataBase.DataBaseManager;
 import com.example.ori.codeoasis.models.ResponseServer;
+import com.example.ori.codeoasis.presenters.BasePresenter;
 import com.example.ori.codeoasis.repo.UserRepo;
 import com.example.ori.codeoasis.services.ApiContract;
 
@@ -17,25 +18,36 @@ import retrofit2.Response;
  * Created by Ori on 1/25/2018.
  */
 
-public class SplashPresenter implements ISplashContact.Presenter {
+public class SplashPresenter extends BasePresenter<ISplashContact.View>
+        implements ISplashContact.Presenter {
 
-    private UserRepo mUserRepo;
+
     private ApiContract mApiService;
     private ISplashContact.View mView;
     private DataBaseManager mDataBaseManager;
 
-    public SplashPresenter(ISplashContact.View view, UserRepo userRepo,
+    public SplashPresenter(ISplashContact.View view,
                            ApiContract apiService, ContactDao contactDao) {
+        super(view);
         mView = view;
-        mUserRepo = userRepo;
+
         mApiService = apiService;
         mDataBaseManager = new DataBaseManager(contactDao);
     }
 
+
     @Override
-    public void init() {
+    public void start() {
+        super.start();
+
+//        mView.startObserving();
+
         mDataBaseManager.getContacts((Context) mView, contacts -> {
-            if (contacts.size() == 0) getContactsFromServer();
+            if (contacts.size() == 0) {
+                getContactsFromServer();
+            }else{
+                mView.goToNextScreen();
+            }
         });
     }
 
@@ -48,6 +60,7 @@ public class SplashPresenter implements ISplashContact.Presenter {
                 mView.showProgressBar(false);
                 if (response.body() != null && response.body().getContacts() != null) {
                     mDataBaseManager.insert(response.body().getContacts());
+                    mView.goToNextScreen();
                 } else {
                     mView.showErrorMessage();
                 }

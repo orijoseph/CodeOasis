@@ -6,6 +6,7 @@ import com.example.ori.codeoasis.dataBase.ContactDao;
 import com.example.ori.codeoasis.dataBase.DataBaseManager;
 import com.example.ori.codeoasis.models.Contact;
 import com.example.ori.codeoasis.models.ResponseServer;
+import com.example.ori.codeoasis.presenters.BasePresenter;
 import com.example.ori.codeoasis.services.ApiContract;
 
 import java.util.List;
@@ -18,7 +19,8 @@ import retrofit2.Response;
  * Created by Ori on 1/26/2018.
  */
 
-public class ContactsPresenter implements IContactsContract.Presenter{
+public class ContactsPresenter extends BasePresenter<IContactsContract.View>
+        implements IContactsContract.Presenter{
 
     private DataBaseManager mDataBaseManager;
     private IContactsContract.View mView;
@@ -26,9 +28,17 @@ public class ContactsPresenter implements IContactsContract.Presenter{
     private List<Contact> mContacts;
 
     public ContactsPresenter(IContactsContract.View view, ContactDao contactDao, ApiContract apiService) {
+        super(view);
         mView = view;
         mDataBaseManager = new DataBaseManager(contactDao);
         mApiService = apiService;
+    }
+
+    @Override
+    public void start() {
+        super.start();
+
+        mView.startObserving();
     }
 
     @Override

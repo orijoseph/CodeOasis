@@ -16,14 +16,14 @@ public interface ISplashContact {
 
         void showErrorMessage();
 
-        void setRecycler(List<Contact> contacts);
-
         void showProgressBar(boolean showProgressBar);
+
+        void goToNextScreen();
     }
 
     interface Presenter {
 
-        void init();
+
 
     }
 }

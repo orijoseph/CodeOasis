@@ -48,41 +48,13 @@ public class ContactsActivity extends AppCompatActivity implements ContactsAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
-
-        Timber.plant(new Timber.DebugTree());
-
-        HttpLoggingInterceptor httpLoggingInterceptor = new
-                HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(@NonNull String message) {
-                Timber.i(message);
-            }
-        });
-
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient okHttpClient = new OkHttpClient()
-                .newBuilder()
-                .addInterceptor(httpLoggingInterceptor)
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(okHttpClient)
-                .baseUrl("https://randomuser.me/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
         findViews();
 
         mPresenter = new ContactsPresenter(this,
                 ContactsDataBase.get(this).getContactDao(),
                 WebService.getClient().create(ApiContract.class));
 
-        mViewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
-
-        mViewModel.mContacts.observe(this, this::setRecycler);
+        mPresenter.start();
     }
 
     private void findViews() {
@@ -130,6 +102,13 @@ public class ContactsActivity extends AppCompatActivity implements ContactsAdapt
     @Override
     public void showErrorMessage() {
         Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void startObserving() {
+        mViewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
+
+        mViewModel.mContacts.observe(this, this::setRecycler);
     }
 
     ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
