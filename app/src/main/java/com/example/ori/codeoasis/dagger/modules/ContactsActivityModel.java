@@ -6,6 +6,7 @@ import com.example.ori.codeoasis.screens.contacts.ContactsPresenter;
 import com.example.ori.codeoasis.screens.contacts.IContactsContract;
 import com.example.ori.codeoasis.services.ApiContract;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 

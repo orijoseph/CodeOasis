@@ -6,13 +6,13 @@ import com.example.ori.codeoasis.dagger.modules.scoups.ActivityScope;
 import com.example.ori.codeoasis.screens.Splash;
 import com.example.ori.codeoasis.screens.contacts.ContactsActivity;
 
-import dagger.Component;
+import dagger.Subcomponent;
 
 @ActivityScope
-@Component(dependencies = AppComponent.class, modules = {SplashActivityModule.class})
+@Subcomponent(modules = {SplashActivityModule.class, ContactsActivityModel.class})
 public interface ActivityComponent {
 
     void inject(Splash splashActivity);
 
-//    void inject(ContactsActivity contactsActivity);
+    void inject(ContactsActivity contactsActivity);
 }

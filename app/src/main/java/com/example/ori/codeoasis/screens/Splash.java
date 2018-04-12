@@ -10,10 +10,7 @@ import android.widget.Toast;
 import com.example.ori.codeoasis.MyApplication;
 import com.example.ori.codeoasis.R;
 import com.example.ori.codeoasis.dagger.modules.SplashActivityModule;
-import com.example.ori.codeoasis.dagger.modules.component.DaggerActivityComponent;
-import com.example.ori.codeoasis.dataBase.ContactDao;
 import com.example.ori.codeoasis.screens.contacts.ContactsActivity;
-import com.example.ori.codeoasis.services.ApiContract;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import javax.inject.Inject;
@@ -31,10 +28,14 @@ public class Splash extends AppCompatActivity implements ISplashContact.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        DaggerActivityComponent.builder()
-                .appComponent(((MyApplication) getApplication()).getmAppComponent())
-                .splashActivityModule(new SplashActivityModule(this))
-                .build().inject(this);
+        ((MyApplication) getApplication()).getmAppComponent()
+                .newActivityComponent(new SplashActivityModule(this))
+                .inject(this);
+
+//        DaggerActivityComponent.builder()
+//                .appComponent(((MyApplication) getApplication()).getmAppComponent())
+//                .splashActivityModule(new SplashActivityModule(this))
+//                .build().inject(this);
 
         findViews();
 
