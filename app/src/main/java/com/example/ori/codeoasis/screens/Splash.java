@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import com.example.ori.codeoasis.MyApplication;
 import com.example.ori.codeoasis.R;
+import com.example.ori.codeoasis.dagger.modules.SplashActivityModule;
+import com.example.ori.codeoasis.dagger.modules.component.DaggerActivityComponent;
 import com.example.ori.codeoasis.dataBase.ContactDao;
 import com.example.ori.codeoasis.screens.contacts.ContactsActivity;
 import com.example.ori.codeoasis.services.ApiContract;
@@ -19,13 +21,9 @@ import javax.inject.Inject;
 public class Splash extends AppCompatActivity implements ISplashContact.View {
 
     @Inject
-    ApiContract apiCalls;
-
-    @Inject
-    ContactDao dataBase;
+    SplashPresenter mPresenter;
 
     private static final int DELAY_TIME = 2000;
-    private SplashPresenter mPresenter;
     private AVLoadingIndicatorView mProgressBar;
 
     @Override
@@ -33,11 +31,12 @@ public class Splash extends AppCompatActivity implements ISplashContact.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        ((MyApplication) getApplication()).getmAppComponent().inject(this);
+        DaggerActivityComponent.builder()
+                .appComponent(((MyApplication) getApplication()).getmAppComponent())
+                .splashActivityModule(new SplashActivityModule(this))
+                .build().inject(this);
 
         findViews();
-
-        mPresenter = new SplashPresenter(this, apiCalls, dataBase);
 
         mPresenter.start();
     }

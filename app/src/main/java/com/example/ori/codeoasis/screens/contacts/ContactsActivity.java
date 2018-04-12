@@ -15,6 +15,9 @@ import android.widget.Toast;
 import com.example.ori.codeoasis.MyApplication;
 import com.example.ori.codeoasis.R;
 import com.example.ori.codeoasis.adapters.ContactsAdapter;
+import com.example.ori.codeoasis.dagger.modules.ContactsActivityModel;
+import com.example.ori.codeoasis.dagger.modules.SplashActivityModule;
+import com.example.ori.codeoasis.dagger.modules.component.DaggerActivityComponent;
 import com.example.ori.codeoasis.dataBase.ContactDao;
 import com.example.ori.codeoasis.helpers.Utils;
 import com.example.ori.codeoasis.models.Contact;
@@ -33,9 +36,11 @@ public class ContactsActivity extends AppCompatActivity implements ContactsAdapt
     @Inject
     ContactDao dataBase;
 
+    //    @Inject
+    ContactsPresenter mPresenter;
+
     private RecyclerView mContactsRV;
     private ContactsAdapter mAdapter;
-    private ContactsPresenter mPresenter;
     private AVLoadingIndicatorView mProgress;
     private ConstraintLayout mRoot;
 
@@ -44,11 +49,16 @@ public class ContactsActivity extends AppCompatActivity implements ContactsAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
+//        DaggerActivityComponent.builder()
+//                .appComponent(((MyApplication) getApplication()).getmAppComponent())
+//                .contactsActivityModel(new ContactsActivityModel(this))
+//                .build().inject(this);
+
         ((MyApplication) getApplication()).getmAppComponent().inject(this);
 
-        findViews();
-
         mPresenter = new ContactsPresenter(this, dataBase, apiCalls);
+
+        findViews();
 
         mPresenter.start();
     }
