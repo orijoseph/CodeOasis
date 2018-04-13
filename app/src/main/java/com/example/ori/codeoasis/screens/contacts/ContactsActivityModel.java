@@ -1,7 +1,8 @@
-package com.example.ori.codeoasis.dagger.modules;
+package com.example.ori.codeoasis.screens.contacts;
 
 import com.example.ori.codeoasis.dagger.modules.scoups.ActivityScope;
 import com.example.ori.codeoasis.dataBase.ContactDao;
+import com.example.ori.codeoasis.dataBase.DataBaseManager;
 import com.example.ori.codeoasis.screens.contacts.ContactsPresenter;
 import com.example.ori.codeoasis.screens.contacts.IContactsContract;
 import com.example.ori.codeoasis.services.ApiContract;
@@ -22,7 +23,7 @@ public class ContactsActivityModel {
 
     @ActivityScope
     @Provides
-    public ContactsPresenter contactsPresenter(ApiContract apiCalls, ContactDao dataBase) {
-        return new ContactsPresenter(mView, dataBase, apiCalls);
+    public ContactsPresenter contactsPresenter(ApiContract apiCalls, ContactDao dataBase, DataBaseManager dataBaseManager) {
+        return new ContactsPresenter(mView, dataBase, apiCalls, dataBaseManager);
     }
 }

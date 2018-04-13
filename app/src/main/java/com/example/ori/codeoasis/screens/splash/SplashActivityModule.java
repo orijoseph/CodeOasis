@@ -1,9 +1,7 @@
-package com.example.ori.codeoasis.dagger.modules;
+package com.example.ori.codeoasis.screens.splash;
 
 import com.example.ori.codeoasis.dagger.modules.scoups.ActivityScope;
 import com.example.ori.codeoasis.dataBase.ContactDao;
-import com.example.ori.codeoasis.screens.ISplashContact;
-import com.example.ori.codeoasis.screens.SplashPresenter;
 import com.example.ori.codeoasis.services.ApiContract;
 
 import dagger.Module;

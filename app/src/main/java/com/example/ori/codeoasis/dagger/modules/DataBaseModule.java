@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 
 import com.example.ori.codeoasis.dataBase.ContactDao;
 import com.example.ori.codeoasis.dataBase.ContactsDataBase;
+import com.example.ori.codeoasis.dataBase.DataBaseManager;
 
 import javax.inject.Singleton;
 
@@ -24,5 +25,11 @@ public class DataBaseModule {
     @Provides
     public ContactDao provideUserDao(ContactsDataBase myDatabase) {
         return myDatabase.getContactDao();
+    }
+
+    @Singleton
+    @Provides
+    public DataBaseManager provideDataBaseManager(ContactDao contactDao){
+        return new DataBaseManager(contactDao);
     }
 }

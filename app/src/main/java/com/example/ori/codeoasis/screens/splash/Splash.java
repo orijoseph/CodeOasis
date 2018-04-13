@@ -1,4 +1,4 @@
-package com.example.ori.codeoasis.screens;
+package com.example.ori.codeoasis.screens.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.example.ori.codeoasis.MyApplication;
 import com.example.ori.codeoasis.R;
-import com.example.ori.codeoasis.dagger.modules.SplashActivityModule;
 import com.example.ori.codeoasis.screens.contacts.ContactsActivity;
 import com.wang.avi.AVLoadingIndicatorView;
 

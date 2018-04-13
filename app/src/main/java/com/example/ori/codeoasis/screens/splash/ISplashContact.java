@@ -1,4 +1,4 @@
-package com.example.ori.codeoasis.screens;
+package com.example.ori.codeoasis.screens.splash;
 
 import android.content.Context;
 

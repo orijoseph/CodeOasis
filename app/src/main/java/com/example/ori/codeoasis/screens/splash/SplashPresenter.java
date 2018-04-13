@@ -1,4 +1,4 @@
-package com.example.ori.codeoasis.screens;
+package com.example.ori.codeoasis.screens.splash;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,6 +7,7 @@ import com.example.ori.codeoasis.dataBase.ContactDao;
 import com.example.ori.codeoasis.dataBase.DataBaseManager;
 import com.example.ori.codeoasis.models.ResponseServer;
 import com.example.ori.codeoasis.presenters.BasePresenter;
+import com.example.ori.codeoasis.screens.splash.ISplashContact;
 import com.example.ori.codeoasis.services.ApiContract;
 
 import retrofit2.Call;
@@ -30,7 +31,6 @@ public class SplashPresenter extends BasePresenter<ISplashContact.View>
                            ContactDao contactDao) {
         super(view);
         mView = view;
-
         mApiService = apiService;
         mDataBaseManager = new DataBaseManager(contactDao);
     }
