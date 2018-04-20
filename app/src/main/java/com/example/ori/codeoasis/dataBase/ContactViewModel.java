@@ -23,7 +23,7 @@ public class ContactViewModel  {
     public ContactViewModel(@NonNull Context application) {
 
         dataBaseDao = ContactsDataBase.get(application).getContactDao();
-        mContacts = dataBaseDao.getContacts();
+//        mContacts = dataBaseDao.getContacts();
     }
 
     public LiveData<List<Contact>> getContacts() {
