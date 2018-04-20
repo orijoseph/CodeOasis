@@ -29,15 +29,6 @@ public class Splash extends DaggerAppCompatActivity implements ISplashContact.Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-//        ((MyApplication) getApplication()).getmAppComponent()
-//                .newActivityComponent(new SplashActivityModule(this))
-//                .inject(this);
-
-//        DaggerActivityComponent.builder()
-//                .appComponent(((MyApplication) getApplication()).getmAppComponent())
-//                .splashActivityModule(new SplashActivityModule(this))
-//                .build().inject(this);
-
         findViews();
 
         mPresenter.start();

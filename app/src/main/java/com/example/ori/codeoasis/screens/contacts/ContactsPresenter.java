@@ -23,13 +23,11 @@ public class ContactsPresenter extends BasePresenter<IContactsContract.View>
         implements IContactsContract.Presenter{
 
     private DataBaseManager mDataBaseManager;
-    private ContactDao mContactDao;
     private IContactsContract.View mView;
     private ApiContract mApiService;
     private List<Contact> mContacts;
 
     public ContactsPresenter(IContactsContract.View view,
-                             ContactDao contactDao,
                              ApiContract apiService,
                              DataBaseManager dataBaseManager) {
         super(view);

@@ -12,18 +12,6 @@ import dagger.Provides;
 @Module
 public abstract class AppModule {
 
-//    Application mApplication;
-//
-//    public AppModule(Application application) {
-//        mApplication = application;
-//    }
-//
-//    @Provides
-//    @Singleton
-//    Application providesApplication() {
-//        return mApplication;
-//    }
-
     @Binds
     abstract Context provideContext(Application application);
 }

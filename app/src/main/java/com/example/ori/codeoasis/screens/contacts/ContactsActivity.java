@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,13 +11,11 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.ori.codeoasis.MyApplication;
 import com.example.ori.codeoasis.R;
 import com.example.ori.codeoasis.adapters.ContactsAdapter;
 import com.example.ori.codeoasis.dataBase.ContactDao;
 import com.example.ori.codeoasis.helpers.Utils;
 import com.example.ori.codeoasis.models.Contact;
-import com.example.ori.codeoasis.services.ApiContract;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.List;
@@ -28,9 +25,6 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerAppCompatActivity;
 
 public class ContactsActivity extends DaggerAppCompatActivity implements ContactsAdapter.IRecyclerCallbacks, IContactsContract.View {
-
-    @Inject
-    ApiContract apiCalls;
 
     @Inject
     ContactDao dataBase;
@@ -47,19 +41,6 @@ public class ContactsActivity extends DaggerAppCompatActivity implements Contact
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-
-//        ((MyApplication) getApplication()).getmAppComponent()
-//                .newContactsComponent(new ContactsActivityModel(this))
-//                .inject(this);
-
-//        DaggerActivityComponent.builder()
-//                .appComponent(((MyApplication) getApplication()).getmAppComponent())
-//                .contactsActivityModel(new ContactsActivityModel(this))
-//                .build().inject(this);
-
-//        ((MyApplication) getApplication()).getmAppComponent().inject(this);
-
-//        mPresenter = new ContactsPresenter(this, dataBase, apiCalls);
 
         findViews();
 
