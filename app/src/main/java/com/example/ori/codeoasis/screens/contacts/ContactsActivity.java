@@ -52,14 +52,15 @@ public class ContactsActivity extends DaggerAppCompatActivity implements Contact
         mProgress = findViewById(R.id.progress);
         mContactsRV = findViewById(R.id.contactsRV);
         mContactsRV.setLayoutManager(new LinearLayoutManager(this));
+        DividerItemDecoration dividerDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        mContactsRV.addItemDecoration(dividerDecoration);
     }
 
     public void setRecycler(List<Contact> contacts) {
         if (contacts.size() == 0) showReloadContactsDialog();
 
         mPresenter.setContactList(contacts);
-        DividerItemDecoration dividerDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        mContactsRV.addItemDecoration(dividerDecoration);
+
         mAdapter = new ContactsAdapter(this, contacts, this);
         mContactsRV.setAdapter(mAdapter);
         itemTouchHelper.attachToRecyclerView(mContactsRV);
@@ -109,7 +110,7 @@ public class ContactsActivity extends DaggerAppCompatActivity implements Contact
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
             showUndoSnackBar(mPresenter.getContacts().get(viewHolder.getAdapterPosition()));
             mPresenter.removeContact(mPresenter.getContacts().get(viewHolder.getAdapterPosition()));
-            mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+//            mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
 
         }
     });
