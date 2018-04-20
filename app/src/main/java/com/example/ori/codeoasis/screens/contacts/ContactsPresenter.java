@@ -1,8 +1,7 @@
 package com.example.ori.codeoasis.screens.contacts;
 
-import android.support.annotation.NonNull;
+import android.annotation.SuppressLint;
 
-import com.example.ori.codeoasis.dataBase.ContactDao;
 import com.example.ori.codeoasis.dataBase.DataBaseManager;
 import com.example.ori.codeoasis.models.Contact;
 import com.example.ori.codeoasis.models.ResponseServer;
@@ -11,21 +10,23 @@ import com.example.ori.codeoasis.services.ApiContract;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Ori on 1/26/2018.
  */
 
 public class ContactsPresenter extends BasePresenter<IContactsContract.View>
-        implements IContactsContract.Presenter{
+        implements IContactsContract.Presenter {
 
     private DataBaseManager mDataBaseManager;
     private IContactsContract.View mView;
     private ApiContract mApiService;
     private List<Contact> mContacts;
+    private Disposable mDisposable;
 
     public ContactsPresenter(IContactsContract.View view,
                              ApiContract apiService,
@@ -57,27 +58,21 @@ public class ContactsPresenter extends BasePresenter<IContactsContract.View>
         return mContacts;
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void loadNewContacts() {
         mView.showProgressBar(true);
-        Call<ResponseServer> call = mApiService.getList();
-        call.enqueue(new Callback<ResponseServer>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseServer> call, @NonNull Response<ResponseServer> response) {
-                mView.showProgressBar(false);
-                if (response.body() != null && response.body().getContacts() != null) {
-                    mDataBaseManager.insert(response.body().getContacts());
-                } else {
-                    mView.showErrorMessage();
-                }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<ResponseServer> call, @NonNull Throwable t) {
-                mView.showProgressBar(false);
-                mView.showErrorMessage();
-            }
-        });
+        Observable<ResponseServer> contacts = mApiService.getList();
+        contacts.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(responseServer -> {
+                    mView.showProgressBar(false);
+                    mDataBaseManager.insert(responseServer.getContacts());
+                }, error -> {
+                    mView.showProgressBar(false);
+                    mView.showErrorMessage();
+                });
     }
 
     @Override

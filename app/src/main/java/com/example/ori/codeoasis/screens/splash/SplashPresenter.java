@@ -1,5 +1,6 @@
 package com.example.ori.codeoasis.screens.splash;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
@@ -10,6 +11,9 @@ import com.example.ori.codeoasis.presenters.BasePresenter;
 import com.example.ori.codeoasis.screens.splash.ISplashContact;
 import com.example.ori.codeoasis.services.ApiContract;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,26 +55,21 @@ public class SplashPresenter extends BasePresenter<ISplashContact.View>
         });
     }
 
+    @SuppressLint("CheckResult")
     private void getContactsFromServer() {
         mView.showProgressBar(true);
-        Call<ResponseServer> call = mApiService.getList();
-        call.enqueue(new Callback<ResponseServer>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseServer> call, @NonNull Response<ResponseServer> response) {
-                mView.showProgressBar(false);
-                if (response.body() != null && response.body().getContacts() != null) {
-                    mDataBaseManager.insert(response.body().getContacts());
-                    mView.goToNextScreen();
-                } else {
-                    mView.showErrorMessage();
-                }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<ResponseServer> call, @NonNull Throwable t) {
-                mView.showProgressBar(false);
-                mView.showErrorMessage();
-            }
-        });
+        Observable<ResponseServer> contacts = mApiService.getList();
+        contacts.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(responseServer -> {
+                    mView.showProgressBar(false);
+                    mDataBaseManager.insert(responseServer.getContacts());
+                    mView.goToNextScreen();
+                }, error ->
+                {
+                    mView.showProgressBar(false);
+                    mView.showErrorMessage();
+                });
     }
 }

@@ -1,7 +1,5 @@
 package com.example.ori.codeoasis.dagger.modules;
 
-import android.app.Application;
-
 import com.example.ori.codeoasis.services.ApiContract;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -16,6 +14,7 @@ import dagger.Provides;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
@@ -52,6 +51,7 @@ public class NetModule {
     @Singleton
     Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl("https://api.androidhive.info/")
                 .client(okHttpClient)

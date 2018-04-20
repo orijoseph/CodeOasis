@@ -2,8 +2,7 @@ package com.example.ori.codeoasis.services;
 
 import com.example.ori.codeoasis.models.ResponseServer;
 
-import retrofit2.Call;
-
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 
 /**
@@ -12,5 +11,5 @@ import retrofit2.http.GET;
 
 public interface ApiContract {
     @GET("contacts")
-    Call<ResponseServer> getList();
+    Observable<ResponseServer> getList();
 }
