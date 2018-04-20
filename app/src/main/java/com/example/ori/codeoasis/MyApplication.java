@@ -8,7 +8,10 @@ import com.example.ori.codeoasis.dagger.modules.NetModule;
 import com.example.ori.codeoasis.dagger.modules.component.AppComponent;
 import com.example.ori.codeoasis.dagger.modules.component.DaggerAppComponent;
 
-public class MyApplication extends Application {
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
+
+public class MyApplication extends DaggerApplication {
 
     private AppComponent mAppComponent;
 
@@ -16,11 +19,18 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        mAppComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this))
-                .netModule(new NetModule())
-                .dataBaseModule(new DataBaseModule())
-                .build();
+//        mAppComponent = DaggerAppComponent.builder()
+//                .appModule(new AppModule(this))
+//                .netModule(new NetModule())
+//                .dataBaseModule(new DataBaseModule())
+//                .build();
+    }
+
+    @Override
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        AppComponent appComponent = DaggerAppComponent.builder().application(this).build();
+        appComponent.inject(this);
+        return appComponent;
     }
 
     public AppComponent getmAppComponent() {

@@ -25,7 +25,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class ContactsActivity extends AppCompatActivity implements ContactsAdapter.IRecyclerCallbacks, IContactsContract.View {
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class ContactsActivity extends DaggerAppCompatActivity implements ContactsAdapter.IRecyclerCallbacks, IContactsContract.View {
 
     @Inject
     ApiContract apiCalls;
@@ -46,9 +48,9 @@ public class ContactsActivity extends AppCompatActivity implements ContactsAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-        ((MyApplication) getApplication()).getmAppComponent()
-                .newContactsComponent(new ContactsActivityModel(this))
-                .inject(this);
+//        ((MyApplication) getApplication()).getmAppComponent()
+//                .newContactsComponent(new ContactsActivityModel(this))
+//                .inject(this);
 
 //        DaggerActivityComponent.builder()
 //                .appComponent(((MyApplication) getApplication()).getmAppComponent())

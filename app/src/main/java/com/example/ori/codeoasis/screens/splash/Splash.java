@@ -14,7 +14,9 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import javax.inject.Inject;
 
-public class Splash extends AppCompatActivity implements ISplashContact.View {
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class Splash extends DaggerAppCompatActivity implements ISplashContact.View {
 
     @Inject
     SplashPresenter mPresenter;
@@ -27,9 +29,9 @@ public class Splash extends AppCompatActivity implements ISplashContact.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        ((MyApplication) getApplication()).getmAppComponent()
-                .newActivityComponent(new SplashActivityModule(this))
-                .inject(this);
+//        ((MyApplication) getApplication()).getmAppComponent()
+//                .newActivityComponent(new SplashActivityModule(this))
+//                .inject(this);
 
 //        DaggerActivityComponent.builder()
 //                .appComponent(((MyApplication) getApplication()).getmAppComponent())

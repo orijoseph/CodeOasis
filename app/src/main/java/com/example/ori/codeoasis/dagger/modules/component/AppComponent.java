@@ -1,22 +1,43 @@
 package com.example.ori.codeoasis.dagger.modules.component;
 
+import android.app.Application;
+
+import com.example.ori.codeoasis.MyApplication;
+import com.example.ori.codeoasis.dagger.modules.ActivityBuilder;
 import com.example.ori.codeoasis.dagger.modules.AppModule;
 import com.example.ori.codeoasis.dagger.modules.DataBaseModule;
 import com.example.ori.codeoasis.dagger.modules.NetModule;
-import com.example.ori.codeoasis.screens.splash.SplashActivityModule;
-import com.example.ori.codeoasis.screens.contacts.ContactsActivityModel;
-import com.example.ori.codeoasis.screens.contacts.ContactsComponent;
-import com.example.ori.codeoasis.screens.splash.SplashActivityComponent;
 
 import javax.inject.Singleton;
 
+import dagger.BindsInstance;
 import dagger.Component;
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 @Singleton
-@Component(modules = {AppModule.class, NetModule.class, DataBaseModule.class})
-public interface AppComponent {
+@Component(modules = {AppModule.class,
+        NetModule.class,
+        DataBaseModule.class,
+        AndroidSupportInjectionModule.class,
+        ActivityBuilder.class})
+public interface AppComponent extends AndroidInjector<DaggerApplication>{
 
-    SplashActivityComponent newActivityComponent(SplashActivityModule splashActivityModule);
+    void inject(MyApplication app);
 
-    ContactsComponent newContactsComponent(ContactsActivityModel contactsActivityModule);
+    @Override
+    void inject(DaggerApplication instance);
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        Builder application(Application application);
+        AppComponent build();
+    }
+
+
+//    SplashActivityComponent newActivityComponent(SplashActivityModule splashActivityModule);
+//
+//    ContactsComponent newContactsComponent(ContactsActivityModel contactsActivityModule);
 }
