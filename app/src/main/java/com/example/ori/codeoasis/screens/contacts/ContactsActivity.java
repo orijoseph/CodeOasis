@@ -123,4 +123,10 @@ public class ContactsActivity extends DaggerAppCompatActivity implements Contact
                 });
         snackbar.show();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.stop();
+    }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -26,7 +26,7 @@ public class ContactsPresenter extends BasePresenter<IContactsContract.View>
     private IContactsContract.View mView;
     private ApiContract mApiService;
     private List<Contact> mContacts;
-    private Disposable mDisposable;
+    private CompositeDisposable mDisposable;
 
     public ContactsPresenter(IContactsContract.View view,
                              ApiContract apiService,
@@ -35,6 +35,7 @@ public class ContactsPresenter extends BasePresenter<IContactsContract.View>
         mView = view;
         mDataBaseManager = dataBaseManager;
         mApiService = apiService;
+        mDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -64,7 +65,8 @@ public class ContactsPresenter extends BasePresenter<IContactsContract.View>
         mView.showProgressBar(true);
 
         Observable<ResponseServer> contacts = mApiService.getList();
-        contacts.subscribeOn(Schedulers.io())
+
+        mDisposable.add(contacts.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(responseServer -> {
                     mView.showProgressBar(false);
@@ -72,11 +74,19 @@ public class ContactsPresenter extends BasePresenter<IContactsContract.View>
                 }, error -> {
                     mView.showProgressBar(false);
                     mView.showErrorMessage();
-                });
+                }));
     }
 
     @Override
     public void addContact(Contact contact) {
         mDataBaseManager.addContact(contact);
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        if (!mDisposable.isDisposed())
+            mDisposable.clear();
+        mView = null;
     }
 }
